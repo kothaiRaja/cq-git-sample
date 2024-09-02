@@ -1,3 +1,4 @@
+Basic important Git commands
 1. git add
 Description: Adds changes in your working directory to the staging area, preparing them to be committed. This command doesn’t save changes permanently but marks them for the next commit.
 2. git commit
