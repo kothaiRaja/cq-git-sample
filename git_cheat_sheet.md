@@ -14,4 +14,3 @@ Description: The git status command displays the state of the working directory 
 
 ## 4. git push
 
-Description: Uploads your local repository content to a remote repository (e.g., GitHub, GitLab). This command is used to share your commits with others or to back up your work.
