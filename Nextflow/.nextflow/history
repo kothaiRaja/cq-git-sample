@@ -1,4 +1,0 @@
-2024-09-05 09:34:14	-	stupefied_goldberg	-	707a0235b3f5ea4290fd1c0c60c6b3c7	ced031ae-821b-47e5-a630-333402258a1d	nextflow run workflow.nf
-2024-09-05 09:35:34	3.4s	nostalgic_mcclintock	OK	9af28d8b9ca4c2cc4e60269bd0011071	3eecbca9-fc72-4fc1-87ac-8a133070b933	nextflow run workflow.nf
-2024-09-05 09:52:04	2.9s	lethal_stonebraker	OK	bca030fd38b24f7aff79036af838ea39	3960452d-8bf7-4d4f-b949-32b2ee307cde	nextflow run workflow.nf
-2024-09-05 10:20:56	15.2s	scruffy_goodall	OK	52a7e42414dfeea34926a671facd8110	7ccd3c67-d901-46ef-b14e-391395803615	nextflow run workflow.nf

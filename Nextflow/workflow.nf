@@ -1,7 +1,9 @@
 nextflow.enable.dsl=2
 
+params.out = "$launchDir/output"
+
 process downloadFile {
-	publishDir "/home/kothai/cq-git-sample/Nextflow", mode: "copy", overwrite: true
+	publishDir params.out, mode: "copy", overwrite: true
 	output:
 	path "blub.fasta"
 	"""
@@ -20,6 +22,5 @@ process countSequences {
 }
 
 workflow {
-	fastchannel= downloadFile()
-	countSequences(fastchannel)
+	downloadFile | countSequences
 }
