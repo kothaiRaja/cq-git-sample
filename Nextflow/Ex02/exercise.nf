@@ -39,8 +39,6 @@ process splitSequence {
 	
 }
 
-//Now we are going to count the G's and C's from the sequences which are in seperate files. 
-
 process countRepeats {
 	publishDir params.out, mode: "copy", overwrite: true
 	input: 
@@ -51,7 +49,8 @@ process countRepeats {
 //The output file will be named based on the input file's base name, with the suffix _GCcount.txt.
 //For example, if the input file is sequence1.fasta, the output will be sequence1_GCcount.txt.
 //"[GC]": A regular expression pattern that matches either "G" or "C". The square brackets ([]) define a character set, so it matches any occurrence of "G" or "C".
-
+//echo prints the basename without extension and the cut the numbers where it is divided by _ and renames it as .repeatGCcount
+//grep completes our requirements and adds to output with comma
 	"""
 	echo -n "${infile.getSimpleName()}" | cut -z -d "_" -f 2 > ${infile.getSimpleName()}.repeatGCcount
 	echo -n ", " >> ${infile.getSimpleName()}.repeatGCcount
@@ -65,6 +64,8 @@ process makeReport {
     path infile 
   output:
     path "finalcount.csv"
+	
+//Combine all the output from previous process using * and make a csv file. 
   """
   cat * > count.csv
   echo "# Sequence number, repeats" > finalcount.csv
