@@ -24,21 +24,17 @@ process countSequences {
 }
 
 process splitSequences {
-    publishDir params.out, mode: "copy", overwrite: true
-
-    input: 
-        path infile
-
-    output:
-        path "numseq_*"  
-
-    script:
-        """
-        split -l 2 $infile numseq_  
-        """
+  publishDir params.out, mode: "copy", overwrite: true
+  input:
+    path infile 
+  output:
+    path "seq_*.fasta"
+  """
+  split -d -l 2 --additional-suffix .fasta $infile seq_
+  """
 }
 
 
 workflow {
-	downloadFile | countSequences
+	downloadFile | splitSequences
 }
