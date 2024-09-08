@@ -13,14 +13,14 @@ process downloadFile {
 }
 
 process countSequences {
-	publishDir "/home/kothai/cq-git-sample/Nextflow", mode: "copy", overwrite: true
-	input: 
-		path infile
-	output:
-	path "numseq.txt"
-	"""
-	grep "^>" $infile | wc -l > numseq.txt
-	"""
+  publishDir params.out, mode: "copy", overwrite: true
+  input:
+    path infile 
+  output:
+    path "numseq*"
+  """
+  grep "^>" $infile | wc -l > numseqs.txt
+  """
 }
 
 process splitSequences {
@@ -40,5 +40,5 @@ process splitSequences {
 
 
 workflow {
-	downloadFile ()
+	downloadFile | countSequences
 }
