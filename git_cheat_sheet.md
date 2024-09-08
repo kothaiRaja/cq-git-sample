@@ -1,3 +1,7 @@
+--------
+geometry: 25
+margin : 25 
+--------
 # Basic important Git commands
 
 ## 1. git add
