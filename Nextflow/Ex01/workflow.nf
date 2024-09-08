@@ -72,5 +72,5 @@ process makeReport {
 }
 
 workflow {
-	downloadFile | splitSequences | flatten | countBases | countRepeats | collect | makeReport  
+	downloadFile | splitSequences | flatten | countRepeats | collect | makeReport  
 }
