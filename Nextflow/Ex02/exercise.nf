@@ -52,7 +52,7 @@ process countRepeats {
 //echo prints the basename without extension and the cut the numbers where it is divided by _ and renames it as .repeatGCcount
 //grep completes our requirements and adds to output with comma
 	"""
-	echo -n "${infile.getSimpleName()}" | cut -z -d "_" -f 2 > ${infile.getSimpleName()}.repeatGCcount
+	echo -n "${infile.getSimpleName()}" | cut -d "_" -f 2 > ${infile.getSimpleName()}.repeatGCcount
 	echo -n ", " >> ${infile.getSimpleName()}.repeatGCcount
 	grep -o "[GC]" ${infile} | wc -l >> ${infile.getSimpleName()}.repeatGCcount
 	"""
