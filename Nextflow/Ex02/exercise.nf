@@ -7,6 +7,7 @@ nextflow.enable.dsl=2
 
 params.out = "$launchDir/output"
 params.url = "http://tinyurl.com/cqbatch1"
+params.projectname = "sample project"
 
 //First process is to download the file. 
 //publishDir: This directive specifies where the output of the process should be saved.
@@ -52,7 +53,7 @@ process countRepeats {
 //echo prints the basename without extension and the cut the numbers where it is divided by _ and renames it as .repeatGCcount
 //grep completes our requirements and adds to output with comma
 	"""
-	echo -n "${infile.getSimpleName()}" | cut -z -d "_" -f 2 > ${infile.getSimpleName()}.repeatGCcount
+	echo -n "${infile.getSimpleName()}"_ | cut -d "_" -f 2 | tr -d \$'\\n' > ${infile.getSimpleName()}.repeatGCcount
 	echo -n ", " >> ${infile.getSimpleName()}.repeatGCcount
 	grep -o "[GC]" ${infile} | wc -l >> ${infile.getSimpleName()}.repeatGCcount
 	"""
@@ -73,6 +74,21 @@ process makeReport {
   """
 }
 
+process makePDF {
+  publishDir params.out, mode: "copy", overwrite: true
+  input:
+    path csvfile
+  output:
+    path "report.pdf"
+// Using the report template create a report, adding the counts at the end
+  """
+  cp $projectDir/templates/template.md template.md
+  cat template.md | sed -e 's/__PROJECTID__/${params.projectname}/g' > report.md
+  cat $csvfile | grep -v "^#" | sed -e 's/,/ |/g' | sed -e 's/^/| /g' | sed -e 's/\$/ |/g' >> report.md
+  pandoc -o report.pdf report.md
+  """
+}
+
 workflow {
-	downloadFile | splitSequence | flatten | countRepeats | collect | makeReport
+	downloadFile | splitSequence | flatten | countRepeats | collect | makeReport | makePDF
 }
