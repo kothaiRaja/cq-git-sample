@@ -1,0 +1,16 @@
+seq_00, ATG, 4
+seq_00, TAA, 5
+seq_00, TAG, 5
+seq_00, TGA, 5
+seq_01, ATG, 14
+seq_01, TAA, 3
+seq_01, TAG, 4
+seq_01, TGA, 9
+seq_02, ATG, 9
+seq_02, TAA, 9
+seq_02, TAG, 5
+seq_02, TGA, 9
+seq_03, ATG, 1
+seq_03, TAA, 1
+seq_03, TAG, 0
+seq_03, TGA, 3
