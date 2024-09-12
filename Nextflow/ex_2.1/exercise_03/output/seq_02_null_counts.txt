@@ -1,2 +1,0 @@
-seq_02.fasta, null, 
-0

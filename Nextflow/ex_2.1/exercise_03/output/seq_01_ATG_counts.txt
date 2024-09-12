@@ -1,1 +1,0 @@
-seq_01.fasta, ATG, 14

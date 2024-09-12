@@ -1,1 +1,0 @@
-seq_00.fasta, TGA, 5
