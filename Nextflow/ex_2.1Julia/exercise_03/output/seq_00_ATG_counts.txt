@@ -1,0 +1,1 @@
+seq_00.fasta, ATG, 4
