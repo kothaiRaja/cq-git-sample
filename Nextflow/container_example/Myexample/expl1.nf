@@ -50,6 +50,23 @@ process convert_to_FASTQfiles{
 	
 }
 
+//creating a process for quality check
+
+process qualityCheck {
+	storeDir params.storeDir
+	publishDir params.out, mode:"copy", overwrite: true
+	container "https://depot.galaxyproject.org/singularity/fastqc-rs%3A0.1.0--h374f2b1_0"
+	input:
+		path accession
+	output:
+		path "${accession.getSimpleName()}.report"
+	"""
+	fastqc $accession > ${accession.getSimpleName()}.report
+	"""
+}
+
+
+
 process stats {
 	publishDir params.out, mode: "copy", overwrite: true
 	container "https://depot.galaxyproject.org/singularity/ngsutils%3A0.5.9--py27heb79e2c_4"
@@ -66,5 +83,6 @@ process stats {
 workflow {
 	prefetch = downloadsraFile(Channel.from(params.accession))
 	converts = convert_to_FASTQfiles(prefetch)
-	stat=stats(converts)
+	quality = qualityCheck(converts)
+//	stat=stats(converts)
 }
