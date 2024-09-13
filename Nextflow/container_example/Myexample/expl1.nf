@@ -50,22 +50,17 @@ process convert_to_FASTQfiles{
 	
 }
 
-//creating a process for quality check
-
-process qualityCheck {
-	storeDir params.storeDir
-	publishDir params.out, mode:"copy", overwrite: true
-	container "https://depot.galaxyproject.org/singularity/fastqc-rs%3A0.1.0--h374f2b1_0"
+process quality_control {
+	publishDir params.out, mode: "copy", overwrite: true
+	container "https://depot.galaxyproject.org/singularity/fastqc%3A0.12.1--hdfd78af_0"
 	input:
 		path accession
 	output:
-		path "${accession.getSimpleName()}.report"
+		path "${accession.baseName}_fastqc.*"
 	"""
-	fastqc $accession > ${accession.getSimpleName()}.report
+	fastqc ${accession}
 	"""
 }
-
-
 
 process stats {
 	publishDir params.out, mode: "copy", overwrite: true
@@ -83,6 +78,6 @@ process stats {
 workflow {
 	prefetch = downloadsraFile(Channel.from(params.accession))
 	converts = convert_to_FASTQfiles(prefetch)
-	quality = qualityCheck(converts)
-//	stat=stats(converts)
+	quality = quality_control(converts)
+
 }
