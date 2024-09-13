@@ -56,7 +56,38 @@ process quality_control {
 	input:
 		path accession
 	output:
-		path "${accession.baseName}_fastqc.*"
+		path "${accession.baseName}_fastqc.*" //first I have "*" and then adter looking at the output, I changed to _fastqc.*(which is two _fastqc files)
+	"""
+	fastqc ${accession}
+	"""
+}
+
+//fastp is a tool used in bioinformatics for the quality control and preprocessing of raw sequence data. It is designed to handle data from high-throughput sequencing platforms, such as Illumina. fastp provides several key functions:
+//It can filter out low-quality reads, which are sequences that have a high probability of containing errors. This is done based on quality scores that are assigned to each base in a read.
+//It can trim adapter sequences, which are artificial sequences added during the preparation of sequencing libraries and are not part of the actual sample's genome.
+//It can correct for errors in the sequencing process, such as mismatches or small insertions and deletions.
+//It provides comprehensive quality control reports, including information on sequence quality, GC content, sequence length distribution, and more.
+//fastp is known for its speed and efficiency, and it can process data in parallel, making it suitable for large datasets.
+
+process fast_p {
+	publishDir params.out, mode: "copy", overwrite: true
+	container "https://depot.galaxyproject.org/singularity/fastp%3A0.23.1--h79da9fb_0"
+	input: 
+		path accession
+	output:
+		path "*"
+	"""
+	fastp -i $accession -o ${accession.baseName}_clean.fastq -h ${accession.baseName}_fastp.html -j ${accession.baseName}_fastp.json
+	"""
+}
+
+process quality_control1 {
+	publishDir params.out, mode: "copy", overwrite: true
+	container "https://depot.galaxyproject.org/singularity/fastqc%3A0.12.1--hdfd78af_0"
+	input:
+		path accession
+	output:
+		path "${accession.baseName}_fastqc.*" //first I have "*" and then adter looking at the output, I changed to _fastqc.*(which is two _fastqc files)
 	"""
 	fastqc ${accession}
 	"""
@@ -79,5 +110,9 @@ workflow {
 	prefetch = downloadsraFile(Channel.from(params.accession))
 	converts = convert_to_FASTQfiles(prefetch)
 	quality = quality_control(converts)
+	fastp = fast_p(quality)
+	quality1 = quality_control1	(fastp)
+	quality12 = quality.concat(quality1)
+	
 
 }
